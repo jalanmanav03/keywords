@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            color: black;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        textarea {
+            width: 100%;
+            margin-top: 10px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 10px;
+            cursor: pointer;
+            padding: 10px;
+        }
+
+        #displayArea {
+            margin-top: 20px;
+        }
+
+        .wordSection {
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            display: inline-block;
+            margin: 5px;
+            padding: 8px;
+            background-color: #ccc;
+            border-radius: 20px;
+        }
+
+        .wordCount {
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+    <title>Simplest Smart Website</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Input Keyword</h1>
+        <textarea id="textInput" placeholder="Type anything..." oninput="checkEnter(event)"></textarea>
+        <button onclick="displayText()">Submit</button>
+        <div id="displayArea"></div>
+    </div>
+    <div class="wordSection" id="wordSection">
+        <h2>Submitted Words</h2>
+        <ul id="wordList"></ul>
+        <div id="wordCount" class="wordCount"></div>
+    </div>
+    <script>
+        function displayText() {
+            const textInput = document.getElementById('textInput').value;
+            const wordList = document.getElementById('wordList');
+            const wordSection = document.getElementById('wordSection');
+            const wordCount = document.getElementById('wordCount');
+
+            // Extract individual words and update the word list
+            const words = textInput.split(/\s+/).filter(Boolean);
+            const uniqueWords = [...new Set(words)];
+
+            // Update the word list at the bottom
+            wordList.innerHTML = '';
+            uniqueWords.forEach(word => {
+                const li = document.createElement('li');
+                li.textContent = capitalizeFirstLetter(word);
+                wordList.appendChild(li);
+            });
+
+            // Update word count
+            const count = uniqueWords.length;
+            wordCount.textContent = `[Word Count: ${count}]`;
+
+            // Clear the text input
+            document.getElementById('textInput').value = '';
+
+            // Scroll the wordSection to the bottom to show the latest submissions
+            wordSection.scrollTop = wordSection.scrollHeight;
+        }
+
+        function checkEnter(event) {
+            if (event.key === 'Enter') {
+                displayText();
+            }
+        }
+
+        function capitalizeFirstLetter(word) {
+            return word.charAt(0).toUpperCase() + word.slice(1);
+        }
+    </script>
+</body>
+</html>
